@@ -65,7 +65,7 @@ exports.handler = function (context, event, callback) {
         return response(
           callback,
           "Wait a minute for the screenshot to upload: " +
-            res.data.screenshotS3Url
+            res.data.S3_SCREENSHOT_URL
         );
       })
       .catch((err) => response(callback, "Got error: " + err));
