@@ -23,16 +23,19 @@ If there are any concerns about morals of doing this, please be aware that you a
 
 
 #### Heroku App (run browser and click buttons)
-1. Get the repo locally: `git clone https://github.com/adam-bates/dayforce-clocker.git && cd dayforce-clocker`
+1. Get this repo locally: `git clone https://github.com/adam-bates/dayforce-clocker.git && cd dayforce-clocker`
 2. Create a new `.env` file to load environment variables: `cp example.env .env`
     - Use the access key id and secret setup with the IAM user
     - Use the public AWS S3 bucket set up earlier
     - Use whatever AWS S3 key you'd like here, for example: `dayforce/screenshot.png`
     - Be sure to double check the AWS region used for your S3 bucket
 3. Setup a new heroku app
+    - Log in and create the app on Heroku: https://dashboard.heroku.com/new-app
+    - Get the Heroku CLI if you don't yet have it: https://devcenter.heroku.com/articles/heroku-cli
     - `heroku login`
     - Within the repo: `heroku git:remote -a {heroku-app-name}`
-    - Add the required puppeteer buildpack: `heroku buildpacks:clear && heroku buildpacks:add --index 1 https://github.com/jontewks/puppeteer-heroku-buildpack && heroku buildpacks:add --index 1 heroku/nodejs`
+    - Add the required buildpacks: `heroku buildpacks:clear && heroku buildpacks:add --index 1 https://github.com/jontewks/puppeteer-heroku-buildpack && heroku buildpacks:add --index 1 heroku/nodejs`
+    - Configure the environment: `heroku config:set $(<.env)`
     - Upload to heroku: `git push heroku master`
 
 
@@ -42,6 +45,14 @@ If there are any concerns about morals of doing this, please be aware that you a
 3. Create a new function in the service, copying the code from https://github.com/adam-bates/dayforce-clocker/blob/master/twilio/welcome.js
 4. Set the environment variable `HEROKU_APP_NAME` in the settings (above the "deploy all" button)
 5. Save and deploy
+6. Go to your Twilio phone number: https://www.twilio.com/console/phone-numbers
+7. Configure the function down at the bottom under "Messaging"
+    - Configure with: Functions
+    - A message comes in: Function
+    - Service: {service-name}
+    - Environment: ui
+    - Function path: {function-name}
+8. Save!
 
 
 #### AWS Lambda (reminder texts)
