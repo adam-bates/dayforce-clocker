@@ -85,9 +85,9 @@ const tryClockingOnPage = async (clockType, page) => {
       await page.mouse.move(mouseX / i, 280 / i);
       await page.waitForTimeout(totalTime / i);
     }
-    // await page.mouse.down();
-    // await page.waitForTimeout(200);
-    // await page.mouse.up();
+    await page.mouse.down();
+    await page.waitForTimeout(200);
+    await page.mouse.up();
     await page.waitForTimeout(3000);
   } catch (e) {
     fs.appendFile(
