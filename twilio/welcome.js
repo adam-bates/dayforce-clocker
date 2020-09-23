@@ -25,10 +25,10 @@ const parseInput = (input) => {
   return isIn ? REQUEST_TYPE.IN : REQUEST_TYPE.OUT;
 };
 
-function response(message) {
+function response(callback, message) {
   const twiml = new Twilio.twiml.MessagingResponse();
   twiml.message(message);
-  return twiml;
+  return callback(null, twiml);
 }
 
 exports.handler = function (context, event, callback) {
@@ -37,12 +37,12 @@ exports.handler = function (context, event, callback) {
   const requestType = parseInput(input);
 
   if (requestType === REQUEST_TYPE.BOTH) {
-    return callback(
-      null,
-      response("Found both 'in' and 'out', please specifiy one.")
+    return response(
+      callback,
+      "Found both 'in' and 'out', please specifiy one."
     );
   } else if (requestType === REQUEST_TYPE.NEITHER) {
-    return callback(null, response("Please specify either 'in' or 'out'."));
+    return response(callback, "Please specify either 'in' or 'out'.");
   }
 
   const url = `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`;
@@ -55,21 +55,19 @@ exports.handler = function (context, event, callback) {
   if (requestType === REQUEST_TYPE.PROBE) {
     instance
       .get("/")
-      .then(() => callback(null, response("Ready")))
-      .catch((err) => callback(null, response("Got error: " + err)));
+      .then(() => response(callback, "Ready"))
+      .catch((err) => response(callback, "Got error: " + err));
   } else {
     const action = requestType === REQUEST_TYPE.IN ? "/in" : "/out";
     instance
       .post(action)
       .then((res) => {
-        return callback(
-          null,
-          response(
-            "Wait a minute for the screenshot to upload: " +
-              res.data.screenshotS3Url
-          )
+        return response(
+          callback,
+          "Wait a minute for the screenshot to upload: " +
+            res.data.screenshotS3Url
         );
       })
-      .catch((err) => callback(null, response("Got error: " + err)));
+      .catch((err) => response(callback, "Got error: " + err));
   }
 };
