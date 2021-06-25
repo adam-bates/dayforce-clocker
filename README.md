@@ -63,6 +63,7 @@ If there are any concerns about morals of doing this, please be aware that you a
 3. When adding code to the function, use the following code: https://github.com/adam-bates/dayforce-clocker/blob/master/aws/dayforce-clocker-text.js
 4. Use the following cron expression in the scheduled trigger: `0 11,20 ? * MON-FRI *`
     - The servers run on UTC, so this will trigger at 7am and 4pm EST every Monday to Friday
+    - `0 12,21 ? * MON-FRI *` will need to be used from Winter - Spring to account for Daylight Savings
 
 ---
 
