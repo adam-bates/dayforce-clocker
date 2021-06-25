@@ -35,7 +35,7 @@ If there are any concerns about morals of doing this, please be aware that you a
     - `heroku login`
     - Within the repo: `heroku git:remote -a {heroku-app-name}`
     - Add the required buildpacks: `heroku buildpacks:clear && heroku buildpacks:add --index 1 https://github.com/jontewks/puppeteer-heroku-buildpack && heroku buildpacks:add --index 1 heroku/nodejs`
-    - Configure the environment: `heroku config:set $(<.env)`
+    - Configure the environment: `cat .env | xargs heroku config:set`
     - Upload to heroku: `git push heroku master`
 
 
